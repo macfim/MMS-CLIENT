@@ -13,6 +13,8 @@ import {
 	FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
+import useLogin from '@/hooks/useLogin'
+import { Loader2 } from 'lucide-react'
 
 const loginFormSchema = z.object({
 	email: z.string().email(),
@@ -28,8 +30,10 @@ export function LoginForm() {
 		},
 	})
 
+	const { mutate: login, isLoading } = useLogin()
+
 	async function onSubmit(values: z.infer<typeof loginFormSchema>) {
-		console.log({ values })
+		login(values)
 	}
 
 	return (
@@ -60,7 +64,7 @@ export function LoginForm() {
 					)}
 				/>
 				<Button type='submit' className='w-full'>
-					Sign in
+					{isLoading ? <Loader2 className='animate-spin' size={24} /> : 'Login'}
 				</Button>
 			</form>
 		</Form>
