@@ -22,8 +22,8 @@ export default function api<Request, Response>({
 	path: string
 	requestSchema: z.ZodType<Request>
 	responseSchema: z.ZodType<Response>
-}): (data: Request) => Promise<Response> {
-	return function (requestData: Request) {
+}): (data: Request, headers?: Record<string, string>) => Promise<Response> {
+	return function (requestData: Request, headers?: Record<string, string>) {
 		requestSchema.parse(requestData)
 
 		async function apiCall() {
@@ -32,6 +32,7 @@ export default function api<Request, Response>({
 				method,
 				url: path,
 				[method === HTTPMethod.GET ? 'params' : 'data']: requestData,
+				headers: headers ?? {},
 			})
 
 			if (isProduction) {

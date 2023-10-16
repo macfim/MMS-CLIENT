@@ -1,7 +1,16 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
-import { MutationCache, QueryClient, QueryClientProvider } from 'react-query'
+import {
+	Mutation,
+	MutationCache,
+	Query,
+	QueryCache,
+	QueryClient,
+	QueryClientProvider,
+	QueryKey,
+} from 'react-query'
+
 import { Toaster, toast } from 'sonner'
 import { z } from 'zod'
 import { AxiosError } from 'axios'
@@ -16,23 +25,34 @@ const ErrorSchema = z.object({
 	statusCode: z.number(),
 })
 
-const queryClient = new QueryClient({
-	mutationCache: new MutationCache({
-		onError: (error) => {
-			if (error instanceof AxiosError) {
-				const parsedError = ErrorSchema.safeParse(error.response?.data)
+const handleAxiosError = (error: AxiosError) => {
+	if (error instanceof AxiosError) {
+		const parsedError = ErrorSchema.safeParse(error.response?.data)
 
-				if (parsedError.success) {
-					if (Array.isArray(parsedError.data.message)) {
-						return toast.error(parsedError.data.message.join('\n'))
-					}
-
-					return toast.error(parsedError.data.message)
-				}
+		if (parsedError.success) {
+			if (Array.isArray(parsedError.data.message)) {
+				return toast.error(parsedError.data.message.join('\n'))
 			}
 
-			toast.error('An unknown error occurred')
-		},
+			return toast.error(parsedError.data.message)
+		}
+	}
+}
+
+const queryClient = new QueryClient({
+	mutationCache: new MutationCache({
+		onError: handleAxiosError as (
+			error: unknown,
+			variables: unknown,
+			context: unknown,
+			mutation: Mutation<unknown, unknown, unknown, unknown>
+		) => void,
+	}),
+	queryCache: new QueryCache({
+		onError: handleAxiosError as (
+			error: unknown,
+			query: Query<unknown, unknown, unknown, QueryKey>
+		) => void,
 	}),
 })
 

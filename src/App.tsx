@@ -1,15 +1,12 @@
-import { Loader2 } from 'lucide-react'
 import { Suspense, lazy } from 'react'
 import { Navigate, Outlet, Route, Routes } from 'react-router-dom'
+import { AuthProvider } from '@/contexts/AuthContext'
+import FullPageSpinner from '@/components/FullPageSpinner'
 
 const LoginPage = lazy(() => import('./pages/LoginPage'))
 
-function FullPageSpinner() {
-	return (
-		<div className='flex justify-center items-center h-screen'>
-			<Loader2 className='animate-spin' size={64} />
-		</div>
-	)
+function requireAuth(component: React.ReactNode) {
+	return <AuthProvider>{component}</AuthProvider>
 }
 
 function BlankLayout() {
@@ -20,7 +17,7 @@ function App() {
 	return (
 		<Suspense fallback={<FullPageSpinner />}>
 			<Routes>
-				<Route index element={<h1>Home</h1>} />
+				<Route index element={requireAuth(<h1>Home</h1>)} />
 				<Route path='/auth' element={<BlankLayout />}>
 					<Route index element={<Navigate to='/auth/login' />} />
 					<Route path='login' element={<LoginPage />} />

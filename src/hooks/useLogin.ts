@@ -2,6 +2,7 @@ import { useMutation } from 'react-query'
 import { z } from 'zod'
 import Cookies from 'js-cookie'
 import api, { HTTPMethod } from '@/lib/api'
+import { useNavigate } from 'react-router-dom'
 
 const LoginRequest = z.object({
 	email: z.string().email(),
@@ -21,6 +22,8 @@ const login = api<z.infer<typeof LoginRequest>, z.infer<typeof LoginResponse>>({
 })
 
 function useLogin() {
+	const navigate = useNavigate()
+
 	return useMutation({
 		mutationKey: 'login',
 		mutationFn: login,
@@ -34,6 +37,8 @@ function useLogin() {
 				path: '/',
 				sameSite: 'strict',
 			})
+
+			navigate('/')
 		},
 	})
 }
