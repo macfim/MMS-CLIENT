@@ -15,7 +15,7 @@ import { Toaster, toast } from 'sonner'
 import { z } from 'zod'
 import { AxiosError } from 'axios'
 
-import App from './App.tsx'
+import App from './app.tsx'
 import './globals.css'
 
 // eslint-disable-next-line react-refresh/only-export-components

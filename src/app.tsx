@@ -3,7 +3,8 @@ import { Navigate, Outlet, Route, Routes } from 'react-router-dom'
 import { AuthProvider } from '@/contexts/AuthContext'
 import FullPageSpinner from '@/components/FullPageSpinner'
 
-const LoginPage = lazy(() => import('./pages/LoginPage'))
+const LoginPage = lazy(() => import('./pages/login-page'))
+const RegisterPage = lazy(() => import('./pages/register-page'))
 
 function requireAuth(component: React.ReactNode) {
 	return <AuthProvider>{component}</AuthProvider>
@@ -21,6 +22,7 @@ function App() {
 				<Route path='/auth' element={<BlankLayout />}>
 					<Route index element={<Navigate to='/auth/login' />} />
 					<Route path='login' element={<LoginPage />} />
+					<Route path='register' element={<RegisterPage />} />
 				</Route>
 			</Routes>
 		</Suspense>

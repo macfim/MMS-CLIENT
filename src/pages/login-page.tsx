@@ -4,9 +4,11 @@ import {
 	CardContent,
 	CardDescription,
 	CardHeader,
+	CardFooter,
 	CardTitle,
 } from '@/components/ui/card'
 import { Component } from 'lucide-react'
+import { Link } from 'react-router-dom'
 
 export default function LoginPage() {
 	return (
@@ -24,6 +26,14 @@ export default function LoginPage() {
 				<CardContent>
 					<LoginForm />
 				</CardContent>
+				<CardFooter>
+					<CardDescription className='mx-auto underline'>
+						<Link to='/auth/register'>
+							Don&apos;t have an account?{' '}
+							<span className='font-bold'>Sign Up</span>
+						</Link>
+					</CardDescription>
+				</CardFooter>
 			</Card>
 		</div>
 	)
