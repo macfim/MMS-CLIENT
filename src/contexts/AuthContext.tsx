@@ -14,13 +14,11 @@ type User = {
 type AuthContextType = {
 	user: User
 	clearUserMe: () => void
-	invalidateUserMe: () => void
 }
 
 const AuthContext = createContext<AuthContextType>({
 	user: {} as User,
 	clearUserMe: () => {},
-	invalidateUserMe: () => {},
 })
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
@@ -36,10 +34,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 		queryClient.setQueryData('userMe', null)
 	}
 
-	function invalidateUserMe() {
-		queryClient.invalidateQueries('userMe')
-	}
-
 	if (isLoadingUserMe) {
 		return <FullPageSpinner />
 	}
@@ -47,9 +41,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 	if (!isSuccessUserMe) return null
 
 	return (
-		<AuthContext.Provider
-			value={{ user: userMe, clearUserMe, invalidateUserMe }}
-		>
+		<AuthContext.Provider value={{ user: userMe, clearUserMe }}>
 			{children}
 		</AuthContext.Provider>
 	)
