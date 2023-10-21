@@ -4,29 +4,32 @@ import Cookies from 'js-cookie'
 import api, { HTTPMethod } from '@/lib/api'
 import { useNavigate } from 'react-router-dom'
 
-const LoginRequest = z.object({
+const loginRequestSchema = z.object({
 	email: z.string().email(),
 	password: z.string().min(8),
 })
-
-const LoginResponse = z.object({
+const loginResponseSchema = z.object({
 	accessToken: z.string(),
 	refreshToken: z.string(),
 })
 
-const login = api<z.infer<typeof LoginRequest>, z.infer<typeof LoginResponse>>({
+export type LoginRequest = z.infer<typeof loginRequestSchema>
+export type LoginResponse = z.infer<typeof loginResponseSchema>
+
+const login = api<LoginRequest, LoginResponse>({
 	method: HTTPMethod.POST,
-	path: '/auth/local/login',
-	requestSchema: LoginRequest,
-	responseSchema: LoginResponse,
+	requestSchema: loginRequestSchema,
+	responseSchema: loginResponseSchema,
 })
 
 function useLogin() {
 	const navigate = useNavigate()
 
-	return useMutation({
+	return useMutation<LoginResponse, unknown, LoginRequest>({
 		mutationKey: 'login',
-		mutationFn: login,
+		mutationFn: function (data) {
+			return login('/auth/local/login', data)
+		},
 		onSuccess(data) {
 			const { accessToken, refreshToken } = data
 

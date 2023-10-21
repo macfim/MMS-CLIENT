@@ -6,9 +6,8 @@ import Cookies from 'js-cookie'
 import useRefresh from './useRefresh'
 import { AxiosError } from 'axios'
 
-const MoneyStacksRequest = z.void()
-
-export const MoneyStacksResponse = z.array(
+const moneyStacksRequestSchema = z.void()
+const moneyStacksResponseSchema = z.array(
 	z.object({
 		id: z.string(),
 		title: z.string(),
@@ -22,14 +21,13 @@ export const MoneyStacksResponse = z.array(
 	})
 )
 
-export type MoneyStackRequestType = z.infer<typeof MoneyStacksRequest>
-export type MoneyStacksResponseType = z.infer<typeof MoneyStacksResponse>
+export type MoneyStacksRequest = z.infer<typeof moneyStacksRequestSchema>
+export type MoneyStacksResponse = z.infer<typeof moneyStacksResponseSchema>
 
-const getMoneyStacks = api<MoneyStackRequestType, MoneyStacksResponseType>({
+const getMoneyStacks = api<MoneyStacksRequest, MoneyStacksResponse>({
 	method: HTTPMethod.GET,
-	path: '/money-stacks',
-	requestSchema: MoneyStacksRequest,
-	responseSchema: MoneyStacksResponse,
+	requestSchema: moneyStacksRequestSchema,
+	responseSchema: moneyStacksResponseSchema,
 })
 
 function useMoneyStacks() {
@@ -40,7 +38,7 @@ function useMoneyStacks() {
 	return useQuery({
 		queryKey: 'moneyStacks',
 		queryFn: function () {
-			return getMoneyStacks(undefined, {
+			return getMoneyStacks('/money-stacks', undefined, {
 				Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
 			})
 		},

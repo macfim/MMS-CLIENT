@@ -4,18 +4,16 @@ import Cookies from 'js-cookie'
 import api, { HTTPMethod } from '@/lib/api'
 import { useNavigate } from 'react-router-dom'
 
-const LogoutRequest = z.void()
+const logoutRequestSchema = z.void()
+const logoutResponseSchema = z.void()
 
-const LogoutResponse = z.void()
+export type LogoutRequest = z.infer<typeof logoutRequestSchema>
+export type LogoutResponse = z.infer<typeof logoutResponseSchema>
 
-const logout = api<
-	z.infer<typeof LogoutRequest>,
-	z.infer<typeof LogoutResponse>
->({
+const logout = api<LogoutRequest, LogoutResponse>({
 	method: HTTPMethod.POST,
-	path: '/auth/logout',
-	requestSchema: LogoutRequest,
-	responseSchema: LogoutResponse,
+	requestSchema: logoutRequestSchema,
+	responseSchema: logoutResponseSchema,
 })
 
 function useLogout() {
@@ -23,7 +21,9 @@ function useLogout() {
 
 	return useMutation({
 		mutationKey: 'logout',
-		mutationFn: logout,
+		mutationFn: function () {
+			return logout('/auth/logout')
+		},
 		onSuccess() {
 			localStorage.removeItem('accessToken')
 			Cookies.remove('refreshToken')
