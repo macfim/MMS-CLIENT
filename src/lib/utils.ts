@@ -4,6 +4,7 @@ import { twMerge } from 'tailwind-merge'
 export function cn(...inputs: ClassValue[]) {
 	return twMerge(clsx(inputs))
 }
+
 export function formatMoney(amount: number): string {
 	const dtAmount = amount / 1000
 	const formattedDt = dtAmount.toLocaleString('en-US', {
@@ -16,4 +17,8 @@ export function formatMoney(amount: number): string {
 	} else {
 		return `${formattedDt} DT`
 	}
+}
+
+export function formatDateString(date: string) {
+	return new Date(date).toLocaleDateString()
 }
