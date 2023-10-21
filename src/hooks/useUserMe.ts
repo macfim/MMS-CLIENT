@@ -4,6 +4,7 @@ import api, { HTTPMethod } from '@/lib/api'
 import { useNavigate } from 'react-router-dom'
 import Cookies from 'js-cookie'
 import useRefresh from './useRefresh'
+import { AxiosError } from 'axios'
 
 const UserMeRequest = z.void()
 
@@ -42,15 +43,21 @@ function useUserMe() {
 		refetchOnReconnect: false,
 		retry: false,
 		staleTime: 1000 * 60 * 60 * 24, // 24 hours
-		onError() {
+		onError(err) {
 			const refreshToken = Cookies.get('refreshToken')
 
-			if (refreshToken) {
-				refresh()
-				return
-			}
+			if (err instanceof AxiosError) {
+				const status = err.response?.status
 
-			navigate('/auth')
+				if (status === 401 || status === 403) {
+					if (refreshToken) {
+						refresh()
+						return
+					}
+
+					navigate('/auth')
+				}
+			}
 		},
 	})
 }
