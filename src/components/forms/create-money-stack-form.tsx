@@ -21,7 +21,7 @@ import { Textarea } from '@/components/ui/textarea'
 const createMoneyStack = z.object({
 	title: z.string().min(3),
 	description: z.string().optional(),
-	initialAmount: z.number().min(2),
+	initialAmount: z.number().min(10).positive(),
 })
 
 type Props = {
@@ -34,7 +34,7 @@ export function CreateMoneyStackForm({ setIsShowDialog }: Props) {
 		defaultValues: {
 			title: '',
 			description: '',
-			initialAmount: 0,
+			initialAmount: 100,
 		},
 	})
 
