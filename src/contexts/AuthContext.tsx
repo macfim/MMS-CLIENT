@@ -1,4 +1,4 @@
-import FullPageSpinner from '@/components/FullPageSpinner'
+import FullPageSpinner from '@/components/full-page-spinner'
 import useUserMe from '@/hooks/useUserMe'
 import { createContext } from 'react'
 import { useQueryClient } from 'react-query'
