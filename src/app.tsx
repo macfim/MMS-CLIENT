@@ -2,24 +2,33 @@ import { Suspense, lazy } from 'react'
 import { Navigate, Outlet, Route, Routes } from 'react-router-dom'
 import { AuthProvider } from '@/contexts/AuthContext'
 import FullPageSpinner from './components/full-page-spinner'
+import NavBar from './components/nav-bar'
 
 const HomePage = lazy(() => import('./pages/home-page'))
 const LoginPage = lazy(() => import('./pages/login-page'))
 const RegisterPage = lazy(() => import('./pages/register-page'))
 
-function requireAuth(component: React.ReactNode) {
-	return <AuthProvider>{component}</AuthProvider>
-}
-
 function BlankLayout() {
 	return <Outlet />
+}
+
+function MainLayout() {
+	return (
+		<AuthProvider>
+			<NavBar />
+			<Outlet />
+		</AuthProvider>
+	)
 }
 
 function App() {
 	return (
 		<Suspense fallback={<FullPageSpinner />}>
 			<Routes>
-				<Route index element={requireAuth(<HomePage />)} />
+				<Route path='/' element={<MainLayout />}>
+					<Route index element={<HomePage />} />
+					<Route path='money-stacks/:id' element={<div>MoneyStack</div>} />
+				</Route>
 				<Route path='/auth' element={<BlankLayout />}>
 					<Route index element={<Navigate to='/auth/login' />} />
 					<Route path='login' element={<LoginPage />} />
