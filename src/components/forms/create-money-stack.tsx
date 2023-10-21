@@ -16,11 +16,12 @@ import { Input } from '@/components/ui/input'
 import { Loader2 } from 'lucide-react'
 import useCreateMoneyStack from '@/hooks/useCreateMoneyStack'
 import React, { SetStateAction } from 'react'
+import { Textarea } from '@/components/ui/textarea'
 
 const createMoneyStack = z.object({
 	title: z.string().min(3),
 	description: z.string().optional(),
-	initialAmount: z.number().min(4),
+	initialAmount: z.number().min(2),
 })
 
 type Props = {
@@ -41,7 +42,10 @@ export function CreateMoneyStackForm({ setIsShowDialog }: Props) {
 		useCreateMoneyStack()
 
 	async function onSubmit(values: z.infer<typeof createMoneyStack>) {
-		createMoneyStackFn(values)
+		createMoneyStackFn({
+			...values,
+			initialAmount: values.initialAmount * 1000,
+		})
 		setIsShowDialog(false)
 	}
 
@@ -66,7 +70,7 @@ export function CreateMoneyStackForm({ setIsShowDialog }: Props) {
 					render={({ field }) => (
 						<FormItem>
 							<FormControl>
-								<Input {...field} placeholder='Description' />
+								<Textarea {...field} placeholder='Description' />
 							</FormControl>
 							<FormMessage />
 						</FormItem>
@@ -90,7 +94,7 @@ export function CreateMoneyStackForm({ setIsShowDialog }: Props) {
 								/>
 							</FormControl>
 							<FormDescription>
-								Please add the money amount in millimes (1dt = 1000).
+								Please add the money amount in DT (e.g., 1000DT).
 							</FormDescription>
 							<FormMessage />
 						</FormItem>

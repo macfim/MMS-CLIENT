@@ -2,10 +2,8 @@ import NavBar from '@/components/nav-bar'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import useMoneyStacks from '@/hooks/useMoneyStacks'
 import { Loader2 } from 'lucide-react'
-import { buttonVariants } from '@/components/ui/button'
-import { Link } from 'react-router-dom'
-import { cn } from '@/lib/utils'
 import CreateMoneyStackDialog from '@/components/create-money-stack-dialog'
+import MoneyStack from '@/components/money-stack'
 
 export default function HomePage() {
 	const { data: moneyStacks, isLoading: isLoadingMoneyStacks } =
@@ -20,66 +18,27 @@ export default function HomePage() {
 						Your list of money stacks
 					</CardHeader>
 					<CardContent className='pb-0 py-4'>
+						<CreateMoneyStackDialog />
 						{isLoadingMoneyStacks && (
 							<div className='w-full h-full grid place-content-center p-20'>
 								<Loader2 className='animate-spin' size={50} />
 							</div>
 						)}
-						{!isLoadingMoneyStacks && (
+						{!isLoadingMoneyStacks && moneyStacks?.length === 0 && (
+							<div className='grid place-content-center p-10'>
+								No Money Stacks
+							</div>
+						)}
+						{!isLoadingMoneyStacks && moneyStacks?.length !== 0 && (
 							<div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4'>
 								{moneyStacks?.map((moneyStack) => (
-									<div
-										key={moneyStack.id}
-										className='border text-center rounded-sm shadow-md'
-									>
-										<div className='p-8'>
-											<div className='text-2xl truncate'>
-												{moneyStack.title}
-											</div>
-											<div className='text-slate-600'>
-												{moneyStack.currentAmount / 1000}DT
-											</div>
-										</div>
-										<Link
-											to={moneyStack.id}
-											className={cn(
-												buttonVariants({ size: 'sm' }),
-												'w-full rounded-b-sm rounded-t-none'
-											)}
-										>
-											View
-										</Link>
-									</div>
+									<MoneyStack key={moneyStack.id} moneyStack={moneyStack} />
 								))}
 							</div>
 						)}
-						<CreateMoneyStackDialog />
 					</CardContent>
 				</Card>
 			</main>
 		</>
 	)
 }
-/* <Table className='min-h-[20rem]'>
-<TableCaption>{new Date().toLocaleDateString()}</TableCaption>
-<TableHeader>
-	<TableRow>
-		<TableHead>Title</TableHead>
-		<TableHead>Description</TableHead>
-		<TableHead>Initial Amount</TableHead>
-		<TableHead>Previous Amount</TableHead>
-		<TableHead>Current Amount</TableHead>
-	</TableRow>
-</TableHeader>
-<TableBody>
-	{moneyStacks?.map((moneyStack) => (
-		<TableRow key={moneyStack.id}>
-			<TableCell>{moneyStack.title}</TableCell>
-			<TableCell>{moneyStack.description}</TableCell>
-			<TableCell>{moneyStack.initialAmount}</TableCell>
-			<TableCell>{moneyStack.previousAmount}</TableCell>
-			<TableCell>{moneyStack.currentAmount}</TableCell>
-		</TableRow>
-	))}
-</TableBody>
-</Table> */
