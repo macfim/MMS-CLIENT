@@ -1,11 +1,9 @@
 import FullPageSpinner from '@/components/full-page-spinner'
 import useMoneyStack from '@/hooks/useMoneyStack'
 import { Navigate, useParams } from 'react-router-dom'
-
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import TransactionTable from '@/components/transations-table'
-import { Button } from '@/components/ui/button'
-import { Plus } from 'lucide-react'
+import CreateTransactionDialog from '@/components/dialogs/create-transaction-dialog'
 
 export default function MoneyStackPage() {
 	const { id } = useParams()
@@ -27,9 +25,7 @@ export default function MoneyStackPage() {
 			<Card>
 				<CardHeader className='py-2 flex flex-row items-center justify-between'>
 					<div>Transactions</div>
-					<Button variant='ghost'>
-						<Plus />
-					</Button>
+					<CreateTransactionDialog moneyStack={moneyStack} />
 				</CardHeader>
 				<CardContent className='py-0'>
 					<TransactionTable moneyStack={moneyStack} />

@@ -7,9 +7,9 @@ import {
 	DialogTrigger,
 } from '@/components/ui/dialog'
 import { cn } from '@/lib/utils'
-import { buttonVariants } from './ui/button'
+import { buttonVariants } from '../ui/button'
 import { useState } from 'react'
-import { CreateMoneyStackForm } from './forms/create-money-stack-form'
+import { CreateMoneyStackForm } from '../forms/create-money-stack-form'
 
 export default function CreateMoneyStackDialog() {
 	const [isShowDialog, setIsShowDialog] = useState(false)
