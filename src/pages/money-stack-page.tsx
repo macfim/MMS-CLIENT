@@ -1,5 +1,5 @@
 import FullPageSpinner from '@/components/full-page-spinner'
-import useMoneyStack from '@/hooks/useMoneyStack'
+import useMoneyStack from '@/hooks/queries/use-money-stack'
 import { Link, Navigate, useParams } from 'react-router-dom'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import TransactionTable from '@/components/transations-table'

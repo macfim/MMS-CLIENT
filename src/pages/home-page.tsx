@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
-import useMoneyStacks from '@/hooks/useMoneyStacks'
+import useMoneyStacks from '@/hooks/queries/use-money-stacks'
 import { Loader2 } from 'lucide-react'
 import CreateMoneyStackDialog from '@/components/dialogs/create-money-stack-dialog'
 import MoneyStack from '@/components/money-stack'

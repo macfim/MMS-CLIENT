@@ -1,4 +1,4 @@
-import useTransactions, { TransactionsResponse } from '@/hooks/useTransactions'
+import useTransactions from '@/hooks/queries/use-transactions'
 import FullPageSpinner from './full-page-spinner'
 import { formatDateString, formatMoney } from '@/lib/utils'
 import { ColumnDef } from '@tanstack/react-table'
@@ -13,10 +13,11 @@ import {
 	DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import DataTable from './data-table'
-import { MoneyStackResponse } from '@/hooks/useMoneyStack'
+import { MoneyStack } from '@/schemas/money-stack'
+import { Transaction } from '@/schemas/transaction'
 
 type Props = {
-	moneyStack: MoneyStackResponse
+	moneyStack: MoneyStack
 }
 
 export default function TransactionTable({ moneyStack }: Props) {
@@ -54,7 +55,7 @@ export default function TransactionTable({ moneyStack }: Props) {
 	)
 }
 
-const columns: ColumnDef<TransactionsResponse[number]>[] = [
+const columns: Array<ColumnDef<Transaction>> = [
 	{
 		accessorKey: 'title',
 		header: 'Title',

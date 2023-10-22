@@ -14,7 +14,7 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Loader2 } from 'lucide-react'
-import useCreateMoneyStack from '@/hooks/useCreateMoneyStack'
+import useCreateMoneyStack from '@/hooks/mutations/use-create-money-stack'
 import React, { SetStateAction } from 'react'
 import { Textarea } from '@/components/ui/textarea'
 
@@ -38,7 +38,7 @@ export function CreateMoneyStackForm({ setIsShowDialog }: Props) {
 		},
 	})
 
-	const { mutate: createMoneyStackFn, isLoading: isLoadingCreateMoneyStack } =
+	const { mutate: createMoneyStackFn, isPending: isPendingCreateMoneyStack } =
 		useCreateMoneyStack()
 
 	async function onSubmit(values: z.infer<typeof createMoneyStack>) {
@@ -101,7 +101,7 @@ export function CreateMoneyStackForm({ setIsShowDialog }: Props) {
 					)}
 				/>
 				<Button type='submit' className='w-full'>
-					{isLoadingCreateMoneyStack ? (
+					{isPendingCreateMoneyStack ? (
 						<Loader2 className='animate-spin' size={24} />
 					) : (
 						'Create money stack'

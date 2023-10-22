@@ -1,7 +1,7 @@
 import FullPageSpinner from '@/components/full-page-spinner'
-import useUserMe from '@/hooks/useUserMe'
+import useUserMe from '@/hooks/queries/use-user-me'
 import { createContext } from 'react'
-import { useQueryClient } from 'react-query'
+import { useQueryClient } from '@tanstack/react-query'
 
 type User = {
 	id: string
@@ -31,7 +31,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 	const queryClient = useQueryClient()
 
 	function clearUserMe() {
-		queryClient.setQueryData('userMe', null)
+		queryClient.setQueryData(['userMe'], null)
 	}
 
 	if (isLoadingUserMe) {
