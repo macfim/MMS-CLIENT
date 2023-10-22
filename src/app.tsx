@@ -2,7 +2,6 @@ import { Suspense, lazy } from 'react'
 import { Navigate, Outlet, Route, Routes } from 'react-router-dom'
 import { AuthProvider } from '@/contexts/AuthContext'
 import FullPageSpinner from './components/full-page-spinner'
-import NavBar from './components/nav-bar'
 
 const HomePage = lazy(() => import('./pages/home-page'))
 const LoginPage = lazy(() => import('./pages/login-page'))
@@ -16,7 +15,6 @@ function BlankLayout() {
 function MainLayout() {
 	return (
 		<AuthProvider>
-			<NavBar />
 			<Outlet />
 		</AuthProvider>
 	)
